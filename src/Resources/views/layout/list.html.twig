@@ -1,0 +1,59 @@
+{% extends '@EasyAdmin/default/list.html.twig' %}
+
+{% block global_actions %}
+    {{ parent() }}
+
+    {% for _action in _entity_config.list.global_actions|default([]) %}
+        {% if 'route' == _action.type|default('method') %}
+            {% set action_href = path(_action.name, _request_parameters|merge({ action: _action.name })) %}
+        {% else %}
+            {% set action_href = path('easyadmin', _request_parameters|merge({ action: _action.name})) %}
+        {% endif %}
+        <div class="button-action">
+            <a class="btn btn-primary {{ _action.css_class|default('') }}" href="{{ action_href }}">
+                {% if _action.icon %}<i class="fa fa-{{ _action.icon }}"></i>{% endif %}
+                {{ _action.label is defined and not _action.label is empty ? _action.label|trans(_trans_parameters) }}
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block search_action %}
+    {% if _entity_config.search.advanced|default(false) == true %}
+        <div class="pull-right">
+            <p>
+                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#advanced_search">
+                    Search
+                </button>
+            </p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="collapse {% if _request_parameters.action == 'searchAdvanced' %}in{% endif %}" id="advanced_search">
+            <div class="well">
+                {% form_theme advanced_search_form with easyadmin_config('design.form_theme') %}
+                {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin'), 'attr': {'class': 'form-horizontal'} }) }}
+                <input type="hidden" name="action" value="searchAdvanced">
+                <input type="hidden" name="entity" value="{{ _request_parameters.entity }}">
+                <input type="hidden" name="sortField" value="{{ _request_parameters.sortField }}">
+                <input type="hidden" name="sortDirection" value="{{ _request_parameters.sortDirection }}">
+                <input type="hidden" name="menuIndex" value="{{ _request_parameters.menuIndex }}">
+                <input type="hidden" name="submenuIndex" value="{{ _request_parameters.submenuIndex }}">
+                {{ form_rest(advanced_search_form) }}
+                <button class="btn btn-primary" type="submit" formtarget="{{ _action.target }}">
+                    <i class="fa fa-search"></i>
+                    <span>{{ 'action.search'|trans(_trans_parameters) }}</span>
+                </button>
+                {{ form_end(advanced_search_form) }}
+            </div>
+        </div>
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock search_action %}
+
+{% block paginator %}
+    {% if 'searchAdvanced' == app.request.get('action') %}
+        {% set _request_parameters = _request_parameters|merge({ search: app.request.get('search')|default('') }) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

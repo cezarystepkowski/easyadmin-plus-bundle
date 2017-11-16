@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" public="false"/>
+
+        <service id="Wingu\EasyAdminPlusBundle\Search\Autocomplete" class="Wingu\EasyAdminPlusBundle\Search\Autocomplete"/>
+        <service id="easyadmin.autocomplete" alias="Wingu\EasyAdminPlusBundle\Search\Autocomplete" public="true"/>
+
+        <prototype namespace="Wingu\EasyAdminPlusBundle\Controller\" resource="../../Controller" public="true">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+
+        <service id="Wingu\EasyAdminPlusBundle\Form\Type\ResourceType"
+                 class="Wingu\EasyAdminPlusBundle\Form\Type\ResourceType"
+                 parent="form.type.entity"
+                 public="false"
+                 autowire="true">
+            <tag name="form.type"/>
+        </service>
+    </services>
+</container>
