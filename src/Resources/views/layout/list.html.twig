@@ -21,11 +21,9 @@
 {% block search_action %}
     {% if _entity_config.search.advanced|default(false) == true %}
         <div class="pull-right">
-            <p>
-                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#advanced_search">
-                    Search
-                </button>
-            </p>
+            <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#advanced_search">
+                Search
+            </button>
         </div>
         <div class="clearfix"></div>
         <div class="collapse {% if _request_parameters.action == 'searchAdvanced' %}in{% endif %}" id="advanced_search">
