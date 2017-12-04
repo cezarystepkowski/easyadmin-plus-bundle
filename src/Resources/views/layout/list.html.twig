@@ -30,7 +30,7 @@
         <div class="collapse {% if _request_parameters.action == 'searchAdvanced' %}in{% endif %}" id="advanced_search">
             <div class="well">
                 {% form_theme advanced_search_form with easyadmin_config('design.form_theme') %}
-                {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin'), 'attr': {'class': 'form-horizontal'} }) }}
+                {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin'), 'attr': {'class': 'form-vertical'} }) }}
                 <input type="hidden" name="action" value="searchAdvanced">
                 <input type="hidden" name="entity" value="{{ _request_parameters.entity }}">
                 <input type="hidden" name="sortField" value="{{ _request_parameters.sortField }}">
@@ -38,10 +38,13 @@
                 <input type="hidden" name="menuIndex" value="{{ _request_parameters.menuIndex }}">
                 <input type="hidden" name="submenuIndex" value="{{ _request_parameters.submenuIndex }}">
                 {{ form_rest(advanced_search_form) }}
-                <button class="btn btn-primary" type="submit" formtarget="{{ _action.target }}">
-                    <i class="fa fa-search"></i>
-                    <span>{{ 'action.search'|trans(_trans_parameters) }}</span>
-                </button>
+                <div class="pull-right">
+                    <button class="btn btn-primary" type="submit" formtarget="{{ _action.target }}">
+                        <i class="fa fa-search"></i>
+                        <span>{{ 'action.search'|trans(_trans_parameters) }}</span>
+                    </button>
+                </div>
+                <div class="clearfix"></div>
                 {{ form_end(advanced_search_form) }}
             </div>
         </div>
