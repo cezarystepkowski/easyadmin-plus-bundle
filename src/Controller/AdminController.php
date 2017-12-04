@@ -7,6 +7,7 @@ namespace Wingu\EasyAdminPlusBundle\Controller;
 use Doctrine\ORM\EntityRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -31,37 +32,15 @@ class AdminController extends BaseAdminController
      */
     public function downloadAction(): Response
     {
-        switch ($this->getReferrerAction()) {
-            case 'search':
-                $paginator = $this->findBy(
-                    $this->entity['class'],
-                    $this->request->query->get('query'),
-                    $this->entity['search']['fields'],
-                    1, // page 1
-                    \PHP_INT_MAX, // all entries
-                    $this->request->query->get('sortField'),
-                    $this->request->query->get('sortDirection'),
-                    $this->entity['search']['dql_filter']
-                );
-                break;
-            case 'list':
-            default:
-                $paginator = $this->findAll(
-                    $this->entity['class'],
-                    $this->request->query->get('page', 1),
-                    $this->config['list']['max_results'],
-                    $this->request->query->get('sortField'),
-                    $this->request->query->get('sortDirection'),
-                    $this->entity['list']['dql_filter']
-                );
-        }
+        $paginator = $this->getPaginatorForDownload($this->getReferrerAction());
 
-        $fields = $this->entity['list']['fields'];
+        $fields = $this->entity['download']['fields'] ?? $this->entity['list']['fields'];
         $data = [];
         foreach ($paginator->getCurrentPageResults() as $item) {
             $row = [];
             foreach ($fields as $field => $metadata) {
-                $row[$field] = $this->renderEntityField($item, $metadata);
+                $label = $metadata['label'] ?: \ucfirst($field);
+                $row[$label] = $this->renderEntityField($item, $metadata);
             }
             $data[] = $row;
         }
@@ -89,12 +68,17 @@ class AdminController extends BaseAdminController
         return $query['action'] ?? 'list';
     }
 
-    private function renderEntityField($item, array $fieldMetadata): string
+    protected function renderEntityField($item, array $fieldMetadata): string
     {
         $fieldName = $fieldMetadata['property'];
 
         try {
-            return (string)$this->get('property_accessor')->getValue($item, $fieldName);
+            $value = $this->get('property_accessor')->getValue($item, $fieldName);
+            if ($value instanceof \DateTime) {
+                return $value->format($fieldMetadata['format'] ?? 'Y-m-d H:i');
+            }
+
+            return (string)$value;
         } catch (\Exception $e) {
             return '';
         }
@@ -130,5 +114,35 @@ class AdminController extends BaseAdminController
         $this->dispatch(EasyAdminEvents::POST_UPDATE, ['entity' => $entity]);
 
         $this->addFlash(self::FLASH_TYPE_SUCCESS, $successMessage);
+    }
+
+    protected function getPaginatorForDownload(string $referrer): Pagerfanta
+    {
+        switch ($referrer) {
+            case 'search':
+                $paginator = $this->findBy(
+                    $this->entity['class'],
+                    $this->request->query->get('query'),
+                    $this->entity['search']['fields'],
+                    1, // page 1
+                    \PHP_INT_MAX, // all entries
+                    $this->request->query->get('sortField'),
+                    $this->request->query->get('sortDirection'),
+                    $this->entity['search']['dql_filter']
+                );
+                break;
+            case 'list':
+            default:
+                $paginator = $this->findAll(
+                    $this->entity['class'],
+                    $this->request->query->get('page', 1),
+                    $this->config['list']['max_results'],
+                    $this->request->query->get('sortField'),
+                    $this->request->query->get('sortDirection'),
+                    $this->entity['list']['dql_filter']
+                );
+        }
+
+        return $paginator;
     }
 }
