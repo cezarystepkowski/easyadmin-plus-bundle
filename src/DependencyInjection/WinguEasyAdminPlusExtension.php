@@ -20,5 +20,6 @@ class WinguEasyAdminPlusExtension extends ConfigurableExtension
         $loader->load('services.xml');
         $container->setParameter('wingu_easy_admin_plus.logo', $config['logo']);
         $container->setParameter('wingu_easy_admin_plus.title', $config['title']);
+        $container->setParameter('wingu_easy_admin_plus.advanced_search_form_class', $config['advanced_search_form_class']);
     }
 }

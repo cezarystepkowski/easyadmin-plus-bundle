@@ -30,7 +30,7 @@
         <div class="collapse {% if _request_parameters.action == 'searchAdvanced' %}in{% endif %}" id="advanced_search">
             <div class="well">
                 {% form_theme advanced_search_form with easyadmin_config('design.form_theme') %}
-                {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin'), 'attr': {'class': 'form-vertical'} }) }}
+                {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin')}) }}
                 <input type="hidden" name="action" value="searchAdvanced">
                 <input type="hidden" name="entity" value="{{ _request_parameters.entity }}">
                 <input type="hidden" name="sortField" value="{{ _request_parameters.sortField }}">

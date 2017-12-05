@@ -6,6 +6,7 @@ namespace Wingu\EasyAdminPlusBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -45,14 +46,27 @@ abstract class AdvancedSearchAdminController extends AdminController
 
     private function buildAdvancedSearchFormView(): FormInterface
     {
-        /** @var FormBuilderInterface $formBuilder */
-        $formBuilder = $this->get('form.factory')->createNamedBuilder('search');
+        $formBuilder = $this->createAdvancedSearchFormBuilder();
         foreach ($this->entity['search']['fields'] as $key => $field) {
             $field = $this->getFormTypeForField($field['type']);
             $formBuilder->add($key, $field['type'], $field['options']);
         }
 
         return $formBuilder->getForm()->handleRequest($this->request);
+    }
+
+    protected function createAdvancedSearchFormBuilder(): FormBuilderInterface
+    {
+        return $this
+            ->get('form.factory')
+            ->createNamedBuilder(
+                'search',
+                FormType::class,
+                null,
+                [
+                    'attr' => ['class' => $this->getParameter('wingu_easy_admin_plus.advanced_search_form_class')]
+                ]
+            );
     }
 
     protected function getFormTypeForField(string $fieldType): array
