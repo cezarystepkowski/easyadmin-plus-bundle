@@ -21,7 +21,6 @@ abstract class AdvancedSearchAdminController extends AdminController
     {
         $this->dispatch(EasyAdminEvents::PRE_LIST);
 
-        $fields = $this->entity['list']['fields'];
         $paginator = $this->findAll(
             $this->entity['class'],
             $this->request->query->get('page', 1),
@@ -35,16 +34,33 @@ abstract class AdvancedSearchAdminController extends AdminController
 
         return $this->render(
             $this->entity['templates']['list'],
-            [
-                'paginator' => $paginator,
-                'fields' => $fields,
-                'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
-                'advanced_search_form' => $this->buildAdvancedSearchFormView()->createView()
-            ]
+            $this->getParametersForPaginatedView($paginator)
         );
     }
 
-    private function buildAdvancedSearchFormView(): FormInterface
+    public function searchAdvancedAction(): Response
+    {
+        $paginator = $this->getPaginatorForAdvancedSearch();
+        $paginator->setMaxPerPage($this->config['list']['max_results']);
+        $paginator->setCurrentPage($this->request->query->get('page', 1));
+
+        return $this->render(
+            $this->entity['templates']['list'],
+            $this->getParametersForPaginatedView($paginator)
+        );
+    }
+
+    protected function getParametersForPaginatedView(Pagerfanta $paginator): array
+    {
+        return [
+            'paginator' => $paginator,
+            'fields' => $this->entity['list']['fields'],
+            'advanced_search_form' => $this->buildAdvancedSearchFormView()->createView(),
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView()
+        ];
+    }
+
+    protected function buildAdvancedSearchFormView(): FormInterface
     {
         $formBuilder = $this->createAdvancedSearchFormBuilder();
         foreach ($this->entity['search']['fields'] as $key => $field) {
@@ -82,23 +98,6 @@ abstract class AdvancedSearchAdminController extends AdminController
         }
     }
 
-    public function searchAdvancedAction(): Response
-    {
-        $paginator = $this->getPaginatorForAdvancedSearch();
-        $paginator->setMaxPerPage($this->config['list']['max_results']);
-        $paginator->setCurrentPage($this->request->query->get('page', 1));
-
-        return $this->render(
-            $this->entity['templates']['list'],
-            [
-                'paginator' => $paginator,
-                'fields' => $this->entity['list']['fields'],
-                'advanced_search_form' => $this->buildAdvancedSearchFormView()->createView(),
-                'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView()
-            ]
-        );
-    }
-
     protected function getPaginatorForDownload(string $referrer): Pagerfanta
     {
         if ($referrer === 'searchAdvanced') {
@@ -112,7 +111,7 @@ abstract class AdvancedSearchAdminController extends AdminController
         return parent::getPaginatorForDownload($referrer);
     }
 
-    private function getPaginatorForAdvancedSearch(): Pagerfanta
+    protected function getPaginatorForAdvancedSearch(): Pagerfanta
     {
         $repository = $this->getAdvancedSearchRepository();
 
