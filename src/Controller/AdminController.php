@@ -59,7 +59,7 @@ class AdminController extends BaseAdminController
     private function getReferrerAction(): string
     {
         $referrerUrl = $this->request->query->get('referer');
-        if ($referrerUrl === null) {
+        if ($referrerUrl === null || $referrerUrl === '') {
             return 'list';
         }
 
