@@ -4,11 +4,11 @@
     {{ parent() }}
 
     {% for _action in _entity_config.list.global_actions|default([]) %}
-        {% set _global_action_request_parameters = _request_parameters|merge(app.request.query.all) %}
+        {% set _request_parameters = _request_parameters|merge({ search: app.request.get('search')|default('') }) %}
         {% if 'route' == _action.type|default('method') %}
-            {% set action_href = path(_action.name, _global_action_request_parameters|merge({ action: _action.name })) %}
+            {% set action_href = path(_action.name, _request_parameters|merge({ action: _action.name })) %}
         {% else %}
-            {% set action_href = path('easyadmin', _global_action_request_parameters|merge({ action: _action.name})) %}
+            {% set action_href = path('easyadmin', _request_parameters|merge({ action: _action.name})) %}
         {% endif %}
         <div class="button-action">
             <a class="btn btn-primary {{ _action.css_class|default('') }}" href="{{ action_href }}">
