@@ -7,7 +7,11 @@
     {# We add referrer again after merging all necessary parameters to ensure that it has all other parameters #}
     {% set _request_parameters = _request_parameters|merge({ referer: path('easyadmin', _request_parameters)|url_encode }) %}
 
-    {% for _action in _entity_config.list.global_actions|default([]) %}
+    {% set _global_actions = _entity_config.list.global_actions|default([]) %}
+    {% if app.request.get('action') == 'search' or app.request.get('action') == 'searchAdvanced' %}
+        {% set _global_actions = _global_actions|merge(_entity_config.search.global_actions|default([])) %}
+    {% endif %}
+    {% for _action in _global_actions %}
         {% if 'route' == _action.type|default('method') %}
             {% set action_href = path(_action.name, _request_parameters|merge({ action: _action.name })) %}
         {% else %}
