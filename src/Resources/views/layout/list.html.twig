@@ -30,7 +30,7 @@
     {% if _entity_config.search.advanced|default(false) == true %}
         <div class="pull-right">
             <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#advanced_search">
-                Search
+                {{ 'action.search'|trans(_trans_parameters) }}
             </button>
         </div>
         <div class="clearfix"></div>

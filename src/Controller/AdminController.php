@@ -40,6 +40,7 @@ class AdminController extends BaseAdminController
             $row = [];
             foreach ($fields as $field => $metadata) {
                 $label = $metadata['label'] ?: \ucfirst($field);
+                $label = $this->get('translator')->trans($label);
                 $row[$label] = $this->renderEntityField($item, $metadata);
             }
             $data[] = $row;
