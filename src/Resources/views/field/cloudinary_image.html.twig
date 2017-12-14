@@ -1,3 +1,5 @@
 {{ cloudinary_image_tag(value, field_options.cloudinary|default({'height' : 50})) }}
-<br/>
-<kbd>{{ value }}</kbd>
+{% if view is defined and view == 'show' %}
+    <br/>
+    <kbd>{{ value }}</kbd>
+{% endif %}
