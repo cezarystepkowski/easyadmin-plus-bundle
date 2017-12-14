@@ -39,7 +39,7 @@ class AdminController extends BaseAdminController
         foreach ($paginator->getCurrentPageResults() as $item) {
             $row = [];
             foreach ($fields as $field => $metadata) {
-                $label = $metadata['label'] ?: \ucfirst($field);
+                $label = $metadata['label'] ?? \ucfirst($metadata['property']);
                 $label = $this->get('translator')->trans($label);
                 $row[$label] = $this->renderEntityField($item, $metadata);
             }
