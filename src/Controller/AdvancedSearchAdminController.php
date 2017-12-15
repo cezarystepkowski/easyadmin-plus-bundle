@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Wingu\EasyAdminPlusBundle\Doctrine\ORM\AdvancedSearchRepository;
 use Wingu\EasyAdminPlusBundle\Form\Type\BooleanType;
 
@@ -93,6 +94,10 @@ abstract class AdvancedSearchAdminController extends AdminController
                 return ['type' => IntegerType::class, 'options' => $options];
             case 'boolean':
                 return ['type' => BooleanType::class, 'options' => $options];
+            case 'guid':
+            case 'uuid':
+                $options['constraints'] = [new Uuid()];
+                return ['type' => TextType::class, 'options' => $options];
             default:
                 return ['type' => TextType::class, 'options' => $options];
         }
@@ -115,18 +120,20 @@ abstract class AdvancedSearchAdminController extends AdminController
     {
         $repository = $this->getAdvancedSearchRepository();
 
-        $criteria = $this->buildAdvancedSearchFormView()->getData();
         $repositoryCriteria = [];
-        $user = null;
-        foreach ($this->entity['search']['fields'] as $key => $field) {
-            if (!isset($criteria[$key])) {
-                continue;
-            }
+        $form = $this->buildAdvancedSearchFormView();
+        if ($form->isValid()) {
+            $criteria = $form->getData();
+            foreach ($this->entity['search']['fields'] as $key => $field) {
+                if (!isset($criteria[$key])) {
+                    continue;
+                }
 
-            $repositoryCriteria[$key] = [
-                'value' => $criteria[$key],
-                'type' => $field['type']
-            ];
+                $repositoryCriteria[$key] = [
+                    'value' => $criteria[$key],
+                    'type' => $field['type']
+                ];
+            }
         }
 
         $repositorySorting = [$this->request->query->get('sortField') => $this->request->query->get('sortDirection')];
