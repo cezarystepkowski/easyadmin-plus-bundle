@@ -34,7 +34,7 @@
             </button>
         </div>
         <div class="clearfix"></div>
-        <div class="collapse" id="advanced_search">
+        <div class="collapse {% if not advanced_search_form.vars.valid %}in{% endif %}" id="advanced_search">
             <div class="well">
                 {% form_theme advanced_search_form with easyadmin_config('design.form_theme') %}
                 {{ form_start(advanced_search_form, {'method': 'GET', 'action': path('easyadmin')}) }}
