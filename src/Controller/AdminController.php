@@ -105,12 +105,13 @@ class AdminController extends BaseAdminController
         return $this->em->getRepository($this->entity['class']);
     }
 
-    protected function updateEntity($entity, ?string $successMessage): void
+    protected function modifyEntity($entity, ?string $successMessage): void
     {
         $this->dispatch(EasyAdminEvents::PRE_UPDATE, ['entity' => $entity]);
 
         $this->executeDynamicMethod('preUpdate<EntityName>Entity', [$entity]);
-        $this->em->flush();
+
+        $this->updateEntity($entity);
 
         $this->dispatch(EasyAdminEvents::POST_UPDATE, ['entity' => $entity]);
 

@@ -24,7 +24,7 @@
     "php": "~7.1",
     "symfony/dependency-injection": "^3.3",
     "symfony/serializer": "^3.3",
-    "javiereguiluz/easyadmin-bundle": "^1.17.5",
+    "javiereguiluz/easyadmin-bundle": "^1.17.9",
     "twig/twig": "^2.0"
   },
   "require-dev": {
@@ -34,9 +34,6 @@
   "suggest": {
     "speicher210/cloudinary-bundle": "",
     "friendsofsymfony/user-bundle": ""
-  },
-  "conflict": {
-    "javiereguiluz/easyadmin-bundle": "1.17.6 || >=1.17.8"
   },
   "autoload": {
     "psr-4": {
