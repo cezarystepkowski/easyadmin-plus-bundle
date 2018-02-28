@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Resource for type.
+ * Extension on EntityType. It expects the entity has a `getId` method and an `id` property.
  */
 final class ResourceType extends EntityType
 {
