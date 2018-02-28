@@ -1,5 +1,11 @@
-{{ cloudinary_image_tag(value, field_options.cloudinary|default({'height' : 50})) }}
-{% if view is defined and view == 'show' %}
-    <br/>
-    <kbd>{{ value }}</kbd>
+{% if value %}
+    {{ cloudinary_image_tag(value, field_options.cloudinary|default({'height' : 50})) }}
+    {% if view is defined and view == 'show' %}
+        <br/>
+        <kbd>{{ value }}</kbd>
+    {% endif %}
+{% else %}
+    <div class="empty collection-empty">
+        {{ include(entity_config.templates.label_null) }}
+    </div>
 {% endif %}
