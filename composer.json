@@ -1,7 +1,7 @@
 {
   "name": "wingu/easyadmin-plus-bundle",
   "type": "symfony-bundle",
-  "description": "This bundle provides some more functionality to javiereguiluz/easyadmin-bundle",
+  "description": "This bundle provides some more functionality to easycorp/easyadmin-bundle",
   "keywords": [
     "backend",
     "admin",
@@ -24,7 +24,7 @@
     "php": "~7.1",
     "symfony/dependency-injection": "^3.3|^4.0",
     "symfony/serializer": "^3.3|^4.0",
-    "easycorp/easyadmin-bundle": "^1.17.9",
+    "easycorp/easyadmin-bundle": "^1.17.12",
     "twig/twig": "^2.0"
   },
   "require-dev": {

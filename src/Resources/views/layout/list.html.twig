@@ -2,11 +2,6 @@
 
 {% block global_actions %}
     {{ parent() }}
-
-    {% set _request_parameters = _request_parameters|merge({ search: app.request.get('search')|default('') }) %}
-    {# We add referrer again after merging all necessary parameters to ensure that it has all other parameters #}
-    {% set _request_parameters = _request_parameters|merge({ referer: path('easyadmin', _request_parameters)|url_encode }) %}
-
     {% set _global_actions = _entity_config.list.global_actions|default([]) %}
     {% if app.request.get('action') == 'search' or app.request.get('action') == 'searchAdvanced' %}
         {% set _global_actions = _global_actions|merge(_entity_config.search.global_actions|default([])) %}
