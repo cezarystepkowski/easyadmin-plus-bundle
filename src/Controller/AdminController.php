@@ -75,6 +75,18 @@ class AdminController extends BaseAdminController
 
         try {
             $value = $this->get('property_accessor')->getValue($item, $fieldName);
+        } catch (\Exception $e) {
+            return '';
+        }
+
+        if (isset($fieldMetadata['template'])) {
+            return $this->renderView(
+                $fieldMetadata['template'],
+                ['item' => $item, 'value' => $value, 'noHtml' => true]
+            );
+        }
+
+        try {
             if ($value instanceof \DateTime) {
                 return $value->format($fieldMetadata['format'] ?? 'Y-m-d H:i');
             }
