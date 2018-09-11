@@ -81,6 +81,7 @@ abstract class AdvancedSearchAdminController extends AdminController
                 FormType::class,
                 null,
                 [
+                    'method' => 'GET',
                     'attr' => ['class' => $this->getParameter('wingu_easy_admin_plus.advanced_search_form_class')]
                 ]
             );
