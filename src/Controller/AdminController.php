@@ -82,7 +82,7 @@ class AdminController extends BaseAdminController
         if (isset($fieldMetadata['template'])) {
             return $this->renderView(
                 $fieldMetadata['template'],
-                ['item' => $item, 'value' => $value, 'noHtml' => true]
+                \array_merge($fieldMetadata, ['item' => $item, 'value' => $value, 'noHtml' => true])
             );
         }
 
