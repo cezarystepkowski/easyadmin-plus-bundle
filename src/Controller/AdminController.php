@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Wingu\EasyAdminPlusBundle\Controller;
 
@@ -74,7 +74,7 @@ class AdminController extends BaseAdminController
         $fieldName = $fieldMetadata['property'];
 
         try {
-            $value = $this->get('property_accessor')->getValue($item, $fieldName);
+            $value = $this->get('easy_admin.property_accessor')->getValue($item, $fieldName);
         } catch (\Exception $e) {
             return '';
         }
