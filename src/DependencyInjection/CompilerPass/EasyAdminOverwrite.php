@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Wingu\EasyAdminPlusBundle\DependencyInjection\CompilerPass;
 
@@ -13,7 +13,7 @@ final class EasyAdminOverwrite implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container): void
+    public function process(ContainerBuilder $container) : void
     {
         $container
             ->getDefinition('easyadmin.form.type.autocomplete')

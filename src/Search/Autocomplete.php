@@ -6,7 +6,7 @@ namespace Wingu\EasyAdminPlusBundle\Search;
 
 use EasyCorp\Bundle\EasyAdminBundle\Configuration\ConfigManager;
 use EasyCorp\Bundle\EasyAdminBundle\Search\Finder;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 final class Autocomplete
 {
@@ -16,7 +16,7 @@ final class Autocomplete
 
     private $propertyAccessor;
 
-    public function __construct(ConfigManager $configManager, Finder $finder, PropertyAccessor $propertyAccessor)
+    public function __construct(ConfigManager $configManager, Finder $finder, PropertyAccessorInterface $propertyAccessor)
     {
         $this->configManager = $configManager;
         $this->finder = $finder;
@@ -31,6 +31,8 @@ final class Autocomplete
      * @param int $page
      *
      * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     public function find($entity, $query, $page = 1): array
     {

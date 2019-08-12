@@ -1,11 +1,13 @@
 {% if value %}
-    {{ cloudinary_image_tag(value, field_options.cloudinary|default({'height' : 50})) }}
+    <a href="#" class="easyadmin-thumbnail" data-featherlight="#easyadmin-lightbox-{{ value }}" data-featherlight-close-on-click="anywhere">
+        {{ cloudinary_image_tag(value, field_options.cloudinary|default({'height' : 50})) }}
+    </a>
     {% if view is defined and view == 'show' %}
-        <br/>
-        <kbd>{{ value }}</kbd>
+        <figcaption class="figure-caption">{{ value }}</figcaption>
     {% endif %}
-{% else %}
-    <div class="empty collection-empty">
-        {{ include(entity_config.templates.label_null) }}
+    <div id="easyadmin-lightbox-{{ value }}" class="easyadmin-lightbox">
+        {{ cloudinary_image_tag(value) }}
     </div>
+{% else %}
+    {{ include(entity_config.templates.label_empty) }}
 {% endif %}

@@ -16,24 +16,25 @@
     },
     {
       "name": "Cezary Stępkowski",
-      "email": "cezary.stepkowski@speicher210.com",
+      "email": "cezary.stepkowski@protonmail.com",
       "role": "Developer"
     }
   ],
   "require": {
     "php": "~7.1",
-    "symfony/dependency-injection": "^3.3|^4.0",
-    "symfony/serializer": "^3.3|^4.0",
-    "easycorp/easyadmin-bundle": "^1.17.12",
+    "symfony/dependency-injection": "^4.2",
+    "symfony/serializer": "^4.2",
+    "easycorp/easyadmin-bundle": "^2.1.4",
     "twig/twig": "^2.0"
   },
   "require-dev": {
-    "speicher210/cloudinary-bundle": "^0.7",
+    "speicher210/cloudinary-bundle": "^0.9",
     "friendsofsymfony/user-bundle": "^2.0"
   },
   "suggest": {
     "speicher210/cloudinary-bundle": "",
-    "friendsofsymfony/user-bundle": ""
+    "friendsofsymfony/user-bundle": "",
+    "symfony/translation": ""
   },
   "autoload": {
     "psr-4": {

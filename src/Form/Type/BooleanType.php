@@ -11,25 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Boolean form type.
  */
-final class BooleanType extends AbstractType
+class BooleanType extends AbstractType
 {
     private const VALUE_TRUE = 1;
 
     private const VALUE_FALSE = 0;
-
-    /**
-     * Label for the true value.
-     *
-     * @var string
-     */
-    protected $labelTrue = 'Yes';
-
-    /**
-     * Label for the false value.
-     *
-     * @var string
-     */
-    protected $labelFalse = 'No';
 
     /**
      * {@inheritdoc}
@@ -39,9 +25,10 @@ final class BooleanType extends AbstractType
         $resolver->setDefaults(
             [
                 'choices' => [
-                    $this->labelTrue => static::VALUE_TRUE,
-                    $this->labelFalse => static::VALUE_FALSE
-                ]
+                    'label.true' => static::VALUE_TRUE,
+                    'label.false' => static::VALUE_FALSE
+                ],
+                'translation_domain' => 'EasyAdminBundle',
             ]
         );
     }
@@ -49,7 +36,7 @@ final class BooleanType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent(): string
+    public function getParent() : string
     {
         return ChoiceType::class;
     }
