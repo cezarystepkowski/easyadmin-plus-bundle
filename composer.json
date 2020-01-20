@@ -21,11 +21,11 @@
     }
   ],
   "require": {
-    "php": "~7.1",
+    "php": "~7.2",
     "symfony/dependency-injection": "^4.2",
     "symfony/serializer": "^4.2",
     "easycorp/easyadmin-bundle": "^2.1.4",
-    "twig/twig": "^2.0"
+    "twig/twig": "^2.0|^3.0"
   },
   "require-dev": {
     "speicher210/cloudinary-bundle": "^0.9",
